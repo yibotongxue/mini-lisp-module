@@ -42,6 +42,16 @@
     "ratio": "cpp",
     "__hash_table": "cpp",
     "__tree": "cpp",
-    "forward_list": "cpp"
+    "forward_list": "cpp",
+    "ios": "cpp",
+    "chrono": "cpp",
+    "format": "cpp",
+    "system_error": "cpp",
+    "__bit_reference": "cpp",
+    "__node_handle": "cpp",
+    "bitset": "cpp",
+    "deque": "cpp",
+    "locale": "cpp",
+    "vector": "cpp"
   }
 }
