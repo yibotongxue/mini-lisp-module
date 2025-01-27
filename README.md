@@ -7,6 +7,7 @@
 需要安装有 `clang` 和 `llvm` ，在 `Ubuntu` 系统可以用如下命令安装
 
 ```bash
+sudo apt install clang
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 sudo ./llvm.sh 18

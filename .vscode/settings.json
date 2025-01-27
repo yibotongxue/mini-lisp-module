@@ -52,6 +52,7 @@
     "bitset": "cpp",
     "deque": "cpp",
     "locale": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "ostream": "cpp"
   }
 }

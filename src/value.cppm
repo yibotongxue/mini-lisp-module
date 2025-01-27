@@ -13,10 +13,12 @@ export class Value {
 
   virtual std::string toString() const = 0;
 
+  constexpr ValueType getType() const {
+    return type_;
+  }
   constexpr bool isNil() const {
     return type_ == ValueType::kNil;
   }
-
   constexpr bool isPair() const {
     return type_ == ValueType::kPair;
   }
