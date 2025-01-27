@@ -5,20 +5,23 @@ import eval_env;
 import <iostream>;
 import <string>;
 import <deque>;
+import <unordered_map>;
 
-// #include "rjsj_test.hpp"
+#include "rjsj_test.hpp"
 
 struct TestCtx {
-  std::string eval(std::string input) {
-    auto tokens = Tokenizer::tokenize(input);
-    Parser parser(std::move(tokens));
-    auto value = parser.parse();
-    return value->toString();
-  }
+    EvalEnv env;
+    std::string eval(std::string input) {
+        auto tokens = Tokenizer::tokenize(input);
+        Parser parser(std::move(tokens));
+        auto value = parser.parse();
+        auto result = env.eval(std::move(value));
+        return result->toString();
+    }
 };
 
 int main() {
-  // RJSJ_TEST(TestCtx, Lv2, Lv2Only);
+  RJSJ_TEST(TestCtx, Lv2, Lv3);
   EvalEnv env;
   while (true) {
     try {

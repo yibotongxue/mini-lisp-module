@@ -2,6 +2,8 @@ export module value;
 
 import <string>;
 import <memory>;
+import <vector>;
+import <optional>;
 
 export enum class ValueType {
   kBoolean,
@@ -24,8 +26,15 @@ export class Value {
   constexpr bool isNil() const { return type_ == ValueType::kNil; }
   constexpr bool isPair() const { return type_ == ValueType::kPair; }
   constexpr bool isSelfEvaluating() const {
-    return type_ == ValueType::kBoolean || type_ == ValueType::kNumeric || type_ == ValueType::kString;
+    return type_ == ValueType::kBoolean || type_ == ValueType::kNumeric ||
+           type_ == ValueType::kString;
   }
+
+  bool isList() const;
+  bool isNotNilList() const;
+
+  std::optional<std::vector<std::shared_ptr<Value>>> asVector() const;
+  std::optional<std::string> asSymbol() const;
 
  protected:
   ValueType type_;
@@ -75,7 +84,7 @@ export class SymbolValue : public Value {
       : Value(ValueType::kSymbol), symbol_(symbol) {}
 
   std::string toString() const override;
-
+  std::string getSymbol() const { return symbol_; }
  private:
   std::string symbol_;
 };
@@ -84,6 +93,9 @@ export class PairValue : public Value {
  public:
   PairValue(std::shared_ptr<Value> left, std::shared_ptr<Value> right)
       : Value(ValueType::kPair), left_(left), right_(right) {}
+
+  std::shared_ptr<Value> getLeft() const { return left_; }
+  std::shared_ptr<Value> getRight() const { return right_; }
 
   std::string toString() const override;
 

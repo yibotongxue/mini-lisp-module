@@ -53,6 +53,11 @@
     "deque": "cpp",
     "locale": "cpp",
     "vector": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "unordered_map": "cpp",
+    "span": "cpp",
+    "text_encoding": "cpp",
+    "__split_buffer": "cpp",
+    "set": "cpp"
   }
 }
