@@ -13,4 +13,6 @@ export class Parser {
 
  private:
   std::deque<std::unique_ptr<Token>> tokens_;
+
+  std::shared_ptr<Value> parseTails();
 };
