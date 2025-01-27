@@ -5,9 +5,7 @@ import <memory>;
 import <iomanip>;
 import <sstream>;
 
-std::string BooleanValue::toString() const {
-  return value_ ? "#t" : "#f";
-}
+std::string BooleanValue::toString() const { return value_ ? "#t" : "#f"; }
 
 std::string NumericValue::toString() const {
   if (double(int(value_)) == value_) {
@@ -22,13 +20,9 @@ std::string StringValue::toString() const {
   return ss.str();
 }
 
-std::string NilValue::toString() const {
-  return "()";
-}
+std::string NilValue::toString() const { return "()"; }
 
-std::string SymbolValue::toString() const {
-  return symbol_;
-}
+std::string SymbolValue::toString() const { return symbol_; }
 
 std::string PairValue::toString() const {
   return "(" + toStringRecursive(this) + ")";

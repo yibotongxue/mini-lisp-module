@@ -3,7 +3,14 @@ export module value;
 import <string>;
 import <memory>;
 
-export enum class ValueType { kBoolean, kNumeric, kString, kNil, kSymbol, kPair };
+export enum class ValueType {
+  kBoolean,
+  kNumeric,
+  kString,
+  kNil,
+  kSymbol,
+  kPair
+};
 
 export class Value {
  public:
@@ -13,15 +20,9 @@ export class Value {
 
   virtual std::string toString() const = 0;
 
-  constexpr ValueType getType() const {
-    return type_;
-  }
-  constexpr bool isNil() const {
-    return type_ == ValueType::kNil;
-  }
-  constexpr bool isPair() const {
-    return type_ == ValueType::kPair;
-  }
+  constexpr ValueType getType() const { return type_; }
+  constexpr bool isNil() const { return type_ == ValueType::kNil; }
+  constexpr bool isPair() const { return type_ == ValueType::kPair; }
 
  protected:
   ValueType type_;
