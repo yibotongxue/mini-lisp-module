@@ -23,6 +23,9 @@ export class Value {
   constexpr ValueType getType() const { return type_; }
   constexpr bool isNil() const { return type_ == ValueType::kNil; }
   constexpr bool isPair() const { return type_ == ValueType::kPair; }
+  constexpr bool isSelfEvaluating() const {
+    return type_ == ValueType::kBoolean || type_ == ValueType::kNumeric || type_ == ValueType::kString;
+  }
 
  protected:
   ValueType type_;
