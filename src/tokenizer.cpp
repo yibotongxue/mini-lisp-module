@@ -1,91 +1,92 @@
-#include "./tokenizer.h"
+module tokenizer;
 
-#include <cctype>
-#include <set>
-#include <stdexcept>
-
-#include "./error.h"
+import <cctype>;
+import <set>;
+import <stdexcept>;
+import error;
 
 const std::set<char> TOKEN_END{'(', ')', '\'', '`', ',', '"'};
 
-TokenPtr Tokenizer::nextToken(int& pos) {
-    while (pos < input.size()) {
-        auto c = input[pos];
-        if (c == ';') {
-            while (pos < input.size() && input[pos] != '\n') {
-                pos++;
-            }
-        } else if (std::isspace(c)) {
-            pos++;
-        } else if (auto token = Token::fromChar(c)) {
-            pos++;
-            return token;
-        } else if (c == '#') {
-            if (auto result = BooleanLiteralToken::fromChar(input[pos + 1])) {
-                pos += 2;
-                return result;
-            } else {
-                throw SyntaxError("Unexpected character after #");
-            }
-        } else if (c == '"') {
-            std::string string;
-            pos++;
-            while (pos < input.size()) {
-                if (input[pos] == '"') {
-                    pos++;
-                    return std::make_unique<StringLiteralToken>(string);
-                } else if (input[pos] == '\\') {
-                    if (pos + 1 >= input.size()) {
-                        throw SyntaxError("Unexpected end of string literal");
-                    }
-                    auto next = input[pos + 1];
-                    if (next == 'n') {
-                        string += '\n';
-                    } else {
-                        string += next;
-                    }
-                    pos += 2;
-                } else {
-                    string += input[pos];
-                    pos++;
-                }
-            }
+std::unique_ptr<Token> Tokenizer::nextToken(int& pos) {
+  while (pos < input.size()) {
+    auto c = input[pos];
+    if (c == ';') {
+      while (pos < input.size() && input[pos] != '\n') {
+        pos++;
+      }
+    } else if (std::isspace(c)) {
+      pos++;
+    } else if (auto token = Token::fromChar(c)) {
+      pos++;
+      return token;
+    } else if (c == '#') {
+      if (auto result = BooleanLiteralToken::fromChar(input[pos + 1])) {
+        pos += 2;
+        return result;
+      } else {
+        throw SyntaxError("Unexpected character after #");
+      }
+    } else if (c == '"') {
+      std::string string;
+      pos++;
+      while (pos < input.size()) {
+        if (input[pos] == '"') {
+          pos++;
+          return std::make_unique<StringLiteralToken>(string);
+        } else if (input[pos] == '\\') {
+          if (pos + 1 >= input.size()) {
             throw SyntaxError("Unexpected end of string literal");
+          }
+          auto next = input[pos + 1];
+          if (next == 'n') {
+            string += '\n';
+          } else {
+            string += next;
+          }
+          pos += 2;
         } else {
-            int start = pos;
-            do {
-                pos++;
-            } while (pos < input.size() && !std::isspace(input[pos]) &&
-                     !TOKEN_END.contains(input[pos]));
-            auto text = input.substr(start, pos - start);
-            if (text == ".") {
-                return Token::dot();
-            }
-            if (std::isdigit(text[0]) || text[0] == '+' || text[0] == '-' || text[0] == '.') {
-                try {
-                    return std::make_unique<NumericLiteralToken>(std::stod(text));
-                } catch (std::invalid_argument& e) {
-                }
-            }
-            return std::make_unique<IdentifierToken>(text);
+          string += input[pos];
+          pos++;
         }
+      }
+      throw SyntaxError("Unexpected end of string literal");
+    } else {
+      int start = pos;
+      do {
+        pos++;
+      } while (pos < input.size() && !std::isspace(input[pos]) &&
+               !TOKEN_END.contains(input[pos]));
+      auto text = input.substr(start, pos - start);
+      if (text == ".") {
+        return Token::dot();
+      }
+      if (std::isdigit(text[0]) || text[0] == '+' || text[0] == '-' ||
+          text[0] == '.') {
+        try {
+          return std::make_unique<NumericLiteralToken>(std::stod(text));
+        } catch (std::invalid_argument& e) {
+        }
+      }
+      return std::make_unique<IdentifierToken>(text);
     }
-    return nullptr;
+  }
+  return nullptr;
 }
 
-std::deque<TokenPtr> Tokenizer::tokenize() {
-    std::deque<TokenPtr> tokens;
-    int pos = 0;
-    while (true) {
-        auto token = nextToken(pos);
-        if (!token) {
-            break;
-        }
-        tokens.push_back(std::move(token));
+std::deque<std::unique_ptr<Token>> Tokenizer::tokenize() {
+  std::deque<std::unique_ptr<Token>> tokens;
+  int pos = 0;
+  while (true) {
+    auto token = nextToken(pos);
+    if (!token) {
+      break;
     }
-    return tokens;
+    tokens.push_back(std::move(token));
+  }
+  return tokens;
 }
 
-std::deque<TokenPtr> Tokenizer::tokenize(const std::string& input) {
-    return Tokenizer(input).tokenize();
+std::deque<std::unique_ptr<Token>> Tokenizer::tokenize(
+    const std::string& input) {
+  return Tokenizer(input).tokenize();
 }
