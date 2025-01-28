@@ -5,23 +5,7 @@ import <vector>;
 import builtins;
 import forms;
 import <algorithm>;
-
-std::shared_ptr<EvalEnv> EvalEnv::createGlobal() {
-  static std::shared_ptr<EvalEnv> instance(new EvalEnv);
-  return instance;
-}
-
-EvalEnv::EvalEnv() : parent_(nullptr) {
-  for (const auto& [key, value] : builtin_map) {
-    symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
-  }
-}
-
-EvalEnv::EvalEnv(std::shared_ptr<EvalEnv> parent) : parent_(parent) {
-  for (const auto& [key, value] : builtin_map) {
-    symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
-  }
-}
+import <functional>;
 
 std::shared_ptr<Value> EvalEnv::eval(std::shared_ptr<Value> expr) {
   if (expr->isSelfEvaluating()) {
@@ -60,14 +44,39 @@ void EvalEnv::addSymbol(const std::string& name, std::shared_ptr<Value> value) {
   symbolMap_[name] = value;
 }
 
+std::shared_ptr<EvalEnv> EvalEnv::createChild(const std::vector<std::string>& names, const std::vector<std::shared_ptr<Value>>& params) {
+  std::shared_ptr<EvalEnv> env = std::shared_ptr<EvalEnv>(new EvalEnv(this->shared_from_this()));
+  for (int i = 0; i < names.size(); i++) {
+    env->addSymbol(names[i], params[i]);
+  }
+  return env;
+}
+
+std::shared_ptr<EvalEnv> EvalEnv::createGlobal() {
+  static std::shared_ptr<EvalEnv> instance(new EvalEnv);
+  return instance;
+}
+
+EvalEnv::EvalEnv() : parent_(nullptr) {
+  for (const auto& [key, value] : builtin_map) {
+    symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
+  }
+}
+
+EvalEnv::EvalEnv(std::shared_ptr<EvalEnv> parent) : parent_(parent) {
+  for (const auto& [key, value] : builtin_map) {
+    symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
+  }
+}
+
 std::shared_ptr<Value> EvalEnv::apply(
     std::shared_ptr<Value> proc,
     const std::vector<std::shared_ptr<Value>>& params) {
-  auto proc_ptr = std::dynamic_pointer_cast<BuiltinProcValue>(proc);
+  auto proc_ptr = std::dynamic_pointer_cast<CallableValue>(proc);
   if (proc_ptr == nullptr) {
-    throw LispError("Try to apply a not builtin proc value to params");
+    throw LispError("Try to apply a not callable proc value to params");
   }
-  return proc_ptr->getFunc()(params);
+  return proc_ptr->apply(params);
 }
 
 std::shared_ptr<Value> EvalEnv::lookupBinding(const std::string& name) {

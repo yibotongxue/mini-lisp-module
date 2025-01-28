@@ -94,11 +94,27 @@ std::string PairValue::toStringRecursive(const Value* value) {
   return value->toString();
 }
 
-std::string BuiltinProcValue::toString() const { return "#<procedure>"; }
+std::string CallableValue::toString() const { return "#<procedure>"; }
+
+std::shared_ptr<Value> BuiltinProcValue::apply(const std::vector<std::shared_ptr<Value>>& params) {
+  return func_(params);
+}
 
 LambdaValue::LambdaValue(const std::vector<std::string>& params,
               const std::vector<std::shared_ptr<Value>>& body,
               std::shared_ptr<EvalEnv> env)
-      : Value(ValueType::kLambda), params_(params), body_(body), env_(env) {}
+      : CallableValue(ValueType::kLambda), params_(params), body_(body), env_(env) {}
 
-std::string LambdaValue::toString() const { return "#<prodcdure>"; }
+std::shared_ptr<Value> LambdaValue::apply(const std::vector<std::shared_ptr<Value>>& params) {
+  if (params.size() != params_.size()) {
+    throw LispError("The parameters size not match in lambda");
+  }
+  auto env = env_->createChild(params_, params);
+  for (int i = 0; i < body_.size(); i++) {
+    auto eval_value = env->eval(body_[i]);
+    if (i == body_.size()) {
+      return eval_value;
+    }
+  }
+  return std::make_shared<NilValue>();
+}

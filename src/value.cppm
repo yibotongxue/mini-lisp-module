@@ -115,17 +115,23 @@ export class PairValue : public Value {
   static std::string toStringRecursive(const Value* value);
 };
 
+export class CallableValue : public Value {
+ public:
+  CallableValue(ValueType type) : Value(type) {}
+
+  virtual std::shared_ptr<Value> apply(const std::vector<std::shared_ptr<Value>>& params) = 0;
+  std::string toString() const override;
+};
+
 export using BuiltinFuncType = std::function<std::shared_ptr<Value>(
     const std::vector<std::shared_ptr<Value>>&)>;
 
-export class BuiltinProcValue : public Value {
+export class BuiltinProcValue : public CallableValue {
  public:
   BuiltinProcValue(BuiltinFuncType func)
-      : Value(ValueType::kBuiltinProc), func_(func) {}
+      : CallableValue(ValueType::kBuiltinProc), func_(func) {}
 
-  std::string toString() const override;
-
-  BuiltinFuncType getFunc() const { return func_; }
+  std::shared_ptr<Value> apply(const std::vector<std::shared_ptr<Value>>& params) override;
 
  private:
   BuiltinFuncType func_;
@@ -133,13 +139,13 @@ export class BuiltinProcValue : public Value {
 
 class EvalEnv;
 
-export class LambdaValue : public Value {
+export class LambdaValue : public CallableValue {
  public:
   LambdaValue(const std::vector<std::string>& params,
               const std::vector<std::shared_ptr<Value>>& body,
               std::shared_ptr<EvalEnv> env);
 
-  std::string toString() const override;
+  std::shared_ptr<Value> apply(const std::vector<std::shared_ptr<Value>>& params) override;
 
  private:
   std::vector<std::string> params_;
