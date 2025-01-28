@@ -121,6 +121,8 @@ export class BuiltinProcValue : public Value {
 
   std::string toString() const override;
 
+  BuiltinFuncType getFunc() const { return func_; }
+
  private:
   BuiltinFuncType func_;
 };

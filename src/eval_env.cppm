@@ -14,4 +14,6 @@ export class EvalEnv {
 
  private:
   std::unordered_map<std::string, std::shared_ptr<Value>> symbolMap_;
+
+  std::shared_ptr<Value> apply(std::shared_ptr<Value> proc, const std::vector<std::shared_ptr<Value>>& params);
 };
