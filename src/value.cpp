@@ -48,6 +48,13 @@ std::optional<double> Value::asNumber() const {
   return std::nullopt;
 }
 
+bool Value::asBoolean() const {
+  if (type_ == ValueType::kBoolean) {
+    return dynamic_cast<const BooleanValue*>(this)->getValue();
+  }
+  return true;
+}
+
 std::string BooleanValue::toString() const { return value_ ? "#t" : "#f"; }
 
 std::string NumericValue::toString() const {

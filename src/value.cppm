@@ -41,6 +41,7 @@ export class Value {
   std::optional<std::vector<std::shared_ptr<Value>>> asVector() const;
   std::optional<std::string> asSymbol() const;
   std::optional<double> asNumber() const;
+  bool asBoolean() const;
 
  protected:
   ValueType type_;
@@ -51,6 +52,7 @@ export class BooleanValue : public Value {
   BooleanValue(bool value) : Value(ValueType::kBoolean), value_(value) {}
 
   std::string toString() const override;
+  bool getValue() const { return value_; }
 
  private:
   bool value_;
