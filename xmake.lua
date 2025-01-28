@@ -6,4 +6,3 @@ add_ldflags("-stdlib=libc++")
 
 target("mini_lisp")
   add_files("src/*.cpp", "src/*.cppm")
-  set_languages("c++20")

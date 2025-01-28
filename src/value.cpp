@@ -112,7 +112,7 @@ std::shared_ptr<Value> LambdaValue::apply(const std::vector<std::shared_ptr<Valu
   auto env = env_->createChild(params_, params);
   for (int i = 0; i < body_.size(); i++) {
     auto eval_value = env->eval(body_[i]);
-    if (i == body_.size()) {
+    if (i == body_.size() - 1) {
       return eval_value;
     }
   }

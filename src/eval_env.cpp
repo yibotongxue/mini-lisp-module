@@ -21,15 +21,15 @@ std::shared_ptr<Value> EvalEnv::eval(std::shared_ptr<Value> expr) {
         std::vector<std::shared_ptr<Value>> args(vec.begin() + 1, vec.end());
         return form_map[*name](args, *this);
       }
-      auto proc = eval(vec[0]);
-      std::vector<std::shared_ptr<Value>> params(vec.size() - 1);
-      std::transform(
-          vec.begin() + 1, vec.end(), params.begin(),
-          [this](std::shared_ptr<Value> value) -> std::shared_ptr<Value> {
-            return this->eval(value);
-          });
-      return apply(proc, params);
     }
+    auto proc = eval(vec[0]);
+    std::vector<std::shared_ptr<Value>> params(vec.size() - 1);
+    std::transform(
+        vec.begin() + 1, vec.end(), params.begin(),
+        [this](std::shared_ptr<Value> value) -> std::shared_ptr<Value> {
+          return this->eval(value);
+        });
+    return apply(proc, params);
   }
   if (auto name = expr->asSymbol()) {
     if (auto value = lookupBinding(*name)) {
@@ -44,8 +44,11 @@ void EvalEnv::addSymbol(const std::string& name, std::shared_ptr<Value> value) {
   symbolMap_[name] = value;
 }
 
-std::shared_ptr<EvalEnv> EvalEnv::createChild(const std::vector<std::string>& names, const std::vector<std::shared_ptr<Value>>& params) {
-  std::shared_ptr<EvalEnv> env = std::shared_ptr<EvalEnv>(new EvalEnv(this->shared_from_this()));
+std::shared_ptr<EvalEnv> EvalEnv::createChild(
+    const std::vector<std::string>& names,
+    const std::vector<std::shared_ptr<Value>>& params) {
+  std::shared_ptr<EvalEnv> env =
+      std::shared_ptr<EvalEnv>(new EvalEnv(this->shared_from_this()));
   for (int i = 0; i < names.size(); i++) {
     env->addSymbol(names[i], params[i]);
   }
