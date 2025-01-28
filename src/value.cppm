@@ -13,7 +13,8 @@ export enum class ValueType {
   kNil,
   kSymbol,
   kPair,
-  kBuiltinProc
+  kBuiltinProc,
+  kLambda
 };
 
 export class Value {
@@ -31,9 +32,7 @@ export class Value {
     return type_ == ValueType::kBoolean || type_ == ValueType::kNumeric ||
            type_ == ValueType::kString;
   }
-  constexpr bool isNumber() const {
-    return type_ == ValueType::kNumeric;
-  }
+  constexpr bool isNumber() const { return type_ == ValueType::kNumeric; }
 
   bool isList() const;
   bool isNotNilList() const;
@@ -94,6 +93,7 @@ export class SymbolValue : public Value {
 
   std::string toString() const override;
   std::string getSymbol() const { return symbol_; }
+
  private:
   std::string symbol_;
 };
@@ -115,11 +115,13 @@ export class PairValue : public Value {
   static std::string toStringRecursive(const Value* value);
 };
 
-export using BuiltinFuncType = std::function<std::shared_ptr<Value>(const std::vector<std::shared_ptr<Value>>&)>;
+export using BuiltinFuncType = std::function<std::shared_ptr<Value>(
+    const std::vector<std::shared_ptr<Value>>&)>;
 
 export class BuiltinProcValue : public Value {
  public:
-  BuiltinProcValue(BuiltinFuncType func) : Value(ValueType::kBuiltinProc), func_(func) {}
+  BuiltinProcValue(BuiltinFuncType func)
+      : Value(ValueType::kBuiltinProc), func_(func) {}
 
   std::string toString() const override;
 
@@ -127,4 +129,17 @@ export class BuiltinProcValue : public Value {
 
  private:
   BuiltinFuncType func_;
+};
+
+export class LambdaValue : public Value {
+ public:
+  LambdaValue(const std::vector<std::string>& params,
+              const std::vector<std::shared_ptr<Value>>& body)
+      : Value(ValueType::kLambda), params_(params), body_(body) {}
+
+  std::string toString() const override;
+
+ private:
+  std::vector<std::string> params_;
+  std::vector<std::shared_ptr<Value>> body_;
 };

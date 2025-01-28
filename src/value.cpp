@@ -96,3 +96,7 @@ std::string PairValue::toStringRecursive(const Value* value) {
 std::string BuiltinProcValue::toString() const {
   return "#<procedure>";
 }
+
+std::string LambdaValue::toString() const {
+  return "#<prodcdure>";
+}
