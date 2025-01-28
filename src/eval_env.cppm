@@ -12,6 +12,8 @@ export class EvalEnv {
 
   std::shared_ptr<Value> eval(std::shared_ptr<Value> expr);
 
+  void addSymbol(const std::string& name, std::shared_ptr<Value> value);
+
  private:
   std::unordered_map<std::string, std::shared_ptr<Value>> symbolMap_;
 
