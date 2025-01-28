@@ -8,6 +8,8 @@ import <map>;
 
 export class EvalEnv {
  public:
+  EvalEnv();
+
   std::shared_ptr<Value> eval(std::shared_ptr<Value> expr);
 
  private:

@@ -2,6 +2,13 @@ module eval_env;
 
 import error;
 import <vector>;
+import builtins;
+
+EvalEnv::EvalEnv() {
+  for (const auto& [key, value] : builtin_map) {
+    symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
+  }
+}
 
 std::shared_ptr<Value> EvalEnv::eval(std::shared_ptr<Value> expr) {
   if (expr->isSelfEvaluating()) {

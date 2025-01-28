@@ -27,7 +27,8 @@ std::optional<std::vector<std::shared_ptr<Value>>> Value::asVector() const {
     return std::vector<std::shared_ptr<Value>>();
   }
   auto pair_ptr = dynamic_cast<const PairValue*>(this);
-  std::vector<std::shared_ptr<Value>> result = {pair_ptr->getLeft()};
+  std::vector<std::shared_ptr<Value>> result;
+  result.push_back(pair_ptr->getLeft());
   auto right_vec = *pair_ptr->getRight()->asVector();
   result.insert(result.end(), right_vec.begin(), right_vec.end());
   return result;
@@ -36,6 +37,13 @@ std::optional<std::vector<std::shared_ptr<Value>>> Value::asVector() const {
 std::optional<std::string> Value::asSymbol() const {
   if (type_ == ValueType::kSymbol) {
     return dynamic_cast<const SymbolValue*>(this)->getSymbol();
+  }
+  return std::nullopt;
+}
+
+std::optional<double> Value::asNumber() const {
+  if (type_ == ValueType::kNumeric) {
+    return dynamic_cast<const NumericValue*>(this)->getValue();
   }
   return std::nullopt;
 }
@@ -76,4 +84,8 @@ std::string PairValue::toStringRecursive(const Value* value) {
     return left->toString() + " . " + right->toString();
   }
   return value->toString();
+}
+
+std::string BuiltinProcValue::toString() const {
+  return "#<procedure>";
 }

@@ -4,6 +4,7 @@ import <string>;
 import <memory>;
 import <vector>;
 import <optional>;
+import <functional>;
 
 export enum class ValueType {
   kBoolean,
@@ -11,7 +12,8 @@ export enum class ValueType {
   kString,
   kNil,
   kSymbol,
-  kPair
+  kPair,
+  kBuiltinProc
 };
 
 export class Value {
@@ -29,12 +31,16 @@ export class Value {
     return type_ == ValueType::kBoolean || type_ == ValueType::kNumeric ||
            type_ == ValueType::kString;
   }
+  constexpr bool isNumber() const {
+    return type_ == ValueType::kNumeric;
+  }
 
   bool isList() const;
   bool isNotNilList() const;
 
   std::optional<std::vector<std::shared_ptr<Value>>> asVector() const;
   std::optional<std::string> asSymbol() const;
+  std::optional<double> asNumber() const;
 
  protected:
   ValueType type_;
@@ -55,6 +61,7 @@ export class NumericValue : public Value {
   NumericValue(double value) : Value(ValueType::kNumeric), value_(value) {}
 
   std::string toString() const override;
+  double getValue() const { return value_; }
 
  private:
   double value_;
@@ -104,4 +111,16 @@ export class PairValue : public Value {
   std::shared_ptr<Value> right_;
 
   static std::string toStringRecursive(const Value* value);
+};
+
+export using BuiltinFuncType = std::function<std::shared_ptr<Value>(const std::vector<std::shared_ptr<Value>>&)>;
+
+export class BuiltinProcValue : public Value {
+ public:
+  BuiltinProcValue(BuiltinFuncType func) : Value(ValueType::kBuiltinProc), func_(func) {}
+
+  std::string toString() const override;
+
+ private:
+  BuiltinFuncType func_;
 };
