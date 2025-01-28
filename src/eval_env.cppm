@@ -8,8 +8,8 @@ import <map>;
 
 export class EvalEnv: public std::enable_shared_from_this<EvalEnv> {
  public:
-  EvalEnv();
-  EvalEnv(std::shared_ptr<EvalEnv> parent);
+
+  static std::shared_ptr<EvalEnv> createGlobal();
 
   std::shared_ptr<Value> eval(std::shared_ptr<Value> expr);
 
@@ -24,4 +24,7 @@ export class EvalEnv: public std::enable_shared_from_this<EvalEnv> {
       const std::vector<std::shared_ptr<Value>>& params);
 
   std::shared_ptr<Value> lookupBinding(const std::string& name);
+
+  EvalEnv();
+  EvalEnv(std::shared_ptr<EvalEnv> parent);
 };

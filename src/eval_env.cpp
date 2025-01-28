@@ -6,6 +6,11 @@ import builtins;
 import forms;
 import <algorithm>;
 
+std::shared_ptr<EvalEnv> EvalEnv::createGlobal() {
+  static std::shared_ptr<EvalEnv> instance(new EvalEnv);
+  return instance;
+}
+
 EvalEnv::EvalEnv() : parent_(nullptr) {
   for (const auto& [key, value] : builtin_map) {
     symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
