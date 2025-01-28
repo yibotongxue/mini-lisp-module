@@ -4,6 +4,7 @@ import <string>;
 import <memory>;
 import <iomanip>;
 import <sstream>;
+import eval_env;
 
 import error;
 
@@ -94,5 +95,10 @@ std::string PairValue::toStringRecursive(const Value* value) {
 }
 
 std::string BuiltinProcValue::toString() const { return "#<procedure>"; }
+
+LambdaValue::LambdaValue(const std::vector<std::string>& params,
+              const std::vector<std::shared_ptr<Value>>& body,
+              std::shared_ptr<EvalEnv> env)
+      : Value(ValueType::kLambda), params_(params), body_(body), env_(env) {}
 
 std::string LambdaValue::toString() const { return "#<prodcdure>"; }

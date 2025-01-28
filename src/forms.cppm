@@ -32,7 +32,7 @@ std::shared_ptr<Value> defineForm(
                        throw LispError("The param should be symbol.");
                      });
       std::vector<std::shared_ptr<Value>> body(args.begin() + 1, args.end());
-      env.addSymbol(*name, std::make_shared<LambdaValue>(params, body));
+      env.addSymbol(*name, std::make_shared<LambdaValue>(params, body, env.shared_from_this()));
       return std::make_shared<NilValue>();
     }
   }
@@ -93,7 +93,7 @@ std::shared_ptr<Value> lambdaForm(
                            throw LispError("The param should be symbol.");
                          });
   std::vector<std::shared_ptr<Value>> body(args.begin() + 1, args.end());
-  return std::make_shared<LambdaValue>(params, body);
+  return std::make_shared<LambdaValue>(params, body, env.shared_from_this());
 }
 
 export std::unordered_map<std::string, SpecialFormType> form_map = {

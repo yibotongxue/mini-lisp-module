@@ -6,16 +6,17 @@ import <iostream>;
 import <string>;
 import <deque>;
 import <unordered_map>;
+import <memory>;
 
 #include "rjsj_test.hpp"
 
 struct TestCtx {
-  EvalEnv env;
+  std::shared_ptr<EvalEnv> env = std::make_shared<EvalEnv>();
   std::string eval(std::string input) {
     auto tokens = Tokenizer::tokenize(input);
     Parser parser(std::move(tokens));
     auto value = parser.parse();
-    auto result = env.eval(std::move(value));
+    auto result = env->eval(std::move(value));
     return result->toString();
   }
 };

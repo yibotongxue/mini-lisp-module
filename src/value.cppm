@@ -131,15 +131,18 @@ export class BuiltinProcValue : public Value {
   BuiltinFuncType func_;
 };
 
+class EvalEnv;
+
 export class LambdaValue : public Value {
  public:
   LambdaValue(const std::vector<std::string>& params,
-              const std::vector<std::shared_ptr<Value>>& body)
-      : Value(ValueType::kLambda), params_(params), body_(body) {}
+              const std::vector<std::shared_ptr<Value>>& body,
+              std::shared_ptr<EvalEnv> env);
 
   std::string toString() const override;
 
  private:
   std::vector<std::string> params_;
   std::vector<std::shared_ptr<Value>> body_;
+  std::shared_ptr<EvalEnv> env_;
 };
