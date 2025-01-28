@@ -20,7 +20,8 @@ std::shared_ptr<Value> add(const std::vector<std::shared_ptr<Value>>& params) {
   return std::make_shared<NumericValue>(result);
 }
 
-std::shared_ptr<Value> divide(const std::vector<std::shared_ptr<Value>>& params) {
+std::shared_ptr<Value> divide(
+    const std::vector<std::shared_ptr<Value>>& params) {
   if (params.size() == 1) {
     auto num = params[0]->asNumber();
     if (!num) {
@@ -43,7 +44,8 @@ std::shared_ptr<Value> divide(const std::vector<std::shared_ptr<Value>>& params)
   throw LispError("The divide builtin should have one or two parameters.");
 }
 
-std::shared_ptr<Value> print(const std::vector<std::shared_ptr<Value>>& params) {
+std::shared_ptr<Value> print(
+    const std::vector<std::shared_ptr<Value>>& params) {
   if (params.size() != 1) {
     throw LispError("Print function requires exactly one argument.");
   }
@@ -52,7 +54,7 @@ std::shared_ptr<Value> print(const std::vector<std::shared_ptr<Value>>& params) 
 }
 
 export std::unordered_map<std::string, BuiltinFuncType> builtin_map = {
-  {"+", add},
-  {"/", divide},
-  {"print", print},
+    {"+", add},
+    {"/", divide},
+    {"print", print},
 };

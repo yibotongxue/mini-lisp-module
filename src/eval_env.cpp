@@ -6,7 +6,13 @@ import builtins;
 import forms;
 import <algorithm>;
 
-EvalEnv::EvalEnv() {
+EvalEnv::EvalEnv() : parent_(nullptr) {
+  for (const auto& [key, value] : builtin_map) {
+    symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
+  }
+}
+
+EvalEnv::EvalEnv(std::shared_ptr<EvalEnv> parent) : parent_(parent) {
   for (const auto& [key, value] : builtin_map) {
     symbolMap_[key] = std::make_shared<BuiltinProcValue>(value);
   }
@@ -21,7 +27,6 @@ std::shared_ptr<Value> EvalEnv::eval(std::shared_ptr<Value> expr) {
   }
   if (expr->isNotNilList()) {
     auto vec = *expr->asVector();
-    // auto name = *vec[0]->asSymbol();
     if (auto name = vec[0]->asSymbol()) {
       if (form_map.contains(*name)) {
         std::vector<std::shared_ptr<Value>> args(vec.begin() + 1, vec.end());
@@ -38,8 +43,8 @@ std::shared_ptr<Value> EvalEnv::eval(std::shared_ptr<Value> expr) {
     }
   }
   if (auto name = expr->asSymbol()) {
-    if (symbolMap_.contains(*name)) {
-      return symbolMap_[*name];
+    if (auto value = lookupBinding(*name)) {
+      return value;
     }
     throw LispError("Variable " + *name + " not defined.");
   }
@@ -58,4 +63,14 @@ std::shared_ptr<Value> EvalEnv::apply(
     throw LispError("Try to apply a not builtin proc value to params");
   }
   return proc_ptr->getFunc()(params);
+}
+
+std::shared_ptr<Value> EvalEnv::lookupBinding(const std::string& name) {
+  if (symbolMap_.contains(name)) {
+    return symbolMap_[name];
+  }
+  if (parent_ != nullptr) {
+    return parent_->lookupBinding(name);
+  }
+  return nullptr;
 }
