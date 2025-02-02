@@ -43,16 +43,21 @@ std::string PairValue::toStringRecursive(const Value* value) {
 
 std::string CallableValue::toString() const { return "#<procedure>"; }
 
-std::shared_ptr<Value> BuiltinProcValue::apply(const std::vector<std::shared_ptr<Value>>& params) {
+std::shared_ptr<Value> BuiltinProcValue::apply(
+    const std::vector<std::shared_ptr<Value>>& params) {
   return func_(params);
 }
 
 LambdaValue::LambdaValue(const std::vector<std::string>& params,
-              const std::vector<std::shared_ptr<Value>>& body,
-              std::shared_ptr<EvalEnv> env)
-      : CallableValue(ValueType::kLambda), params_(params), body_(body), env_(env) {}
+                         const std::vector<std::shared_ptr<Value>>& body,
+                         std::shared_ptr<EvalEnv> env)
+    : CallableValue(ValueType::kLambda),
+      params_(params),
+      body_(body),
+      env_(env) {}
 
-std::shared_ptr<Value> LambdaValue::apply(const std::vector<std::shared_ptr<Value>>& params) {
+std::shared_ptr<Value> LambdaValue::apply(
+    const std::vector<std::shared_ptr<Value>>& params) {
   if (params.size() != params_.size()) {
     throw LispError("The parameters size not match in lambda");
   }

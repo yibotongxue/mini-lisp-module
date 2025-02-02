@@ -77,7 +77,8 @@ export class CallableValue : public Value {
  public:
   CallableValue(ValueType type) : Value(type) {}
 
-  virtual std::shared_ptr<Value> apply(const std::vector<std::shared_ptr<Value>>& params) = 0;
+  virtual std::shared_ptr<Value> apply(
+      const std::vector<std::shared_ptr<Value>>& params) = 0;
   std::string toString() const override;
 };
 
@@ -89,7 +90,8 @@ export class BuiltinProcValue : public CallableValue {
   BuiltinProcValue(BuiltinFuncType func)
       : CallableValue(ValueType::kBuiltinProc), func_(func) {}
 
-  std::shared_ptr<Value> apply(const std::vector<std::shared_ptr<Value>>& params) override;
+  std::shared_ptr<Value> apply(
+      const std::vector<std::shared_ptr<Value>>& params) override;
 
  private:
   BuiltinFuncType func_;
@@ -101,7 +103,8 @@ export class LambdaValue : public CallableValue {
               const std::vector<std::shared_ptr<Value>>& body,
               std::shared_ptr<EvalEnv> env);
 
-  std::shared_ptr<Value> apply(const std::vector<std::shared_ptr<Value>>& params) override;
+  std::shared_ptr<Value> apply(
+      const std::vector<std::shared_ptr<Value>>& params) override;
 
  private:
   std::vector<std::string> params_;

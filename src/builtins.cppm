@@ -39,7 +39,8 @@ std::shared_ptr<Value> divide(
   throw LispError("The divide builtin should have one or two parameters.");
 }
 
-std::shared_ptr<Value> multiply(const std::vector<std::shared_ptr<Value>>& params) {
+std::shared_ptr<Value> multiply(
+    const std::vector<std::shared_ptr<Value>>& params) {
   double result = 1.0;
   for (auto&& i : params) {
     if (!i->isNumber()) {
@@ -50,7 +51,8 @@ std::shared_ptr<Value> multiply(const std::vector<std::shared_ptr<Value>>& param
   return std::make_shared<NumericValue>(result);
 }
 
-std::shared_ptr<Value> greater(const std::vector<std::shared_ptr<Value>>& params) {
+std::shared_ptr<Value> greater(
+    const std::vector<std::shared_ptr<Value>>& params) {
   if (params.size() != 2) {
     throw LispError("The greater function requires exactly two arguments.");
   }
@@ -71,9 +73,6 @@ std::shared_ptr<Value> print(
 }
 
 export std::unordered_map<std::string, BuiltinFuncType> builtin_map = {
-    {"+", add},
-    {"/", divide},
-    {"*", multiply},
-    {">", greater},
-    {"print", print},
+    {"+", add},     {"/", divide},    {"*", multiply},
+    {">", greater}, {"print", print},
 };

@@ -75,78 +75,87 @@ import std;
 #define PP_GET_N_9(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, ...) _9
 #define PP_GET_N_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, ...) _10
 #define PP_GET_N_11(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, ...) _11
-#define PP_GET_N_12(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, ...) _12
-#define PP_GET_N_13(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, ...) _13
-#define PP_GET_N_14(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, ...) _14
-#define PP_GET_N_15(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, ...) _15
-#define PP_GET_N_16(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, \
-                    ...)                                                                       \
-    _16
-#define PP_IS_EMPTY(...)                                                                   \
-    PP_AND(PP_AND(PP_NOT(PP_HAS_COMMA(__VA_ARGS__)), PP_NOT(PP_HAS_COMMA(__VA_ARGS__()))), \
-           PP_AND(PP_NOT(PP_HAS_COMMA(PP_COMMA_V __VA_ARGS__)),                            \
-                  PP_HAS_COMMA(PP_COMMA_V __VA_ARGS__())))
+#define PP_GET_N_12(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, \
+                    ...)                                                   \
+  _12
+#define PP_GET_N_13(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, \
+                    _13, ...)                                              \
+  _13
+#define PP_GET_N_14(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, \
+                    _13, _14, ...)                                         \
+  _14
+#define PP_GET_N_15(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, \
+                    _13, _14, _15, ...)                                    \
+  _15
+#define PP_GET_N_16(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, \
+                    _13, _14, _15, _16, ...)                               \
+  _16
+#define PP_IS_EMPTY(...)                                      \
+  PP_AND(PP_AND(PP_NOT(PP_HAS_COMMA(__VA_ARGS__)),            \
+                PP_NOT(PP_HAS_COMMA(__VA_ARGS__()))),         \
+         PP_AND(PP_NOT(PP_HAS_COMMA(PP_COMMA_V __VA_ARGS__)), \
+                PP_HAS_COMMA(PP_COMMA_V __VA_ARGS__())))
 #define PP_HAS_COMMA(...) \
-    PP_GET_N_16(__VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0)
+  PP_GET_N_16(__VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0)
 #define PP_COMMA_V(...) ,
 #define PP_VA_OPT_COMMA(...) PP_COMMA_IF(PP_NOT(PP_IS_EMPTY(__VA_ARGS__)))
-#define PP_NARG(...)                                                                              \
-    PP_GET_N(16, __VA_ARGS__ PP_VA_OPT_COMMA(__VA_ARGS__) 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, \
-             5, 4, 3, 2, 1, 0)
+#define PP_NARG(...)                                                        \
+  PP_GET_N(16, __VA_ARGS__ PP_VA_OPT_COMMA(__VA_ARGS__) 16, 15, 14, 13, 12, \
+           11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
 #define PP_FOR_EACH(DO, CTX, ...) \
-    PP_CONCAT(PP_FOR_EACH_, PP_NARG(__VA_ARGS__))(DO, CTX, 0, __VA_ARGS__)
+  PP_CONCAT(PP_FOR_EACH_, PP_NARG(__VA_ARGS__))(DO, CTX, 0, __VA_ARGS__)
 #define PP_FOR_EACH_0(DO, CTX, IDX, ...)
 #define PP_FOR_EACH_1(DO, CTX, IDX, VAR, ...) DO(VAR, IDX, CTX)
 #define PP_FOR_EACH_2(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_1(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_1(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_3(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_2(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_2(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_4(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_3(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_3(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_5(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_4(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_4(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_6(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_5(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_5(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_7(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_6(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_6(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_8(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_7(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_7(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_9(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                         \
-    PP_FOR_EACH_8(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                           \
+  PP_FOR_EACH_8(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_10(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                          \
-    PP_FOR_EACH_9(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                            \
+  PP_FOR_EACH_9(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_11(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                          \
-    PP_FOR_EACH_10(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                            \
+  PP_FOR_EACH_10(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_12(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                          \
-    PP_FOR_EACH_11(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                            \
+  PP_FOR_EACH_11(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_13(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                          \
-    PP_FOR_EACH_12(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                            \
+  PP_FOR_EACH_12(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_14(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                          \
-    PP_FOR_EACH_13(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                            \
+  PP_FOR_EACH_13(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_15(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                          \
-    PP_FOR_EACH_14(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                            \
+  PP_FOR_EACH_14(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 #define PP_FOR_EACH_16(DO, CTX, IDX, VAR, ...) \
-    DO(VAR, IDX, CTX)                          \
-    PP_FOR_EACH_15(DO, CTX, PP_INC(IDX), __VA_ARGS__)
+  DO(VAR, IDX, CTX)                            \
+  PP_FOR_EACH_15(DO, CTX, PP_INC(IDX), __VA_ARGS__)
 
 #define RMLT_INTERNAL_CASE_PREFIXED(name) PP_CONCAT(rjsj_mini_lisp_test_, name)
 
 #define RMLT_INTERNAL_FOREACH_ADD_PREFIX(VAR, IDX, CTX) \
-    PP_COMMA_IF(IDX) RMLT_INTERNAL_CASE_PREFIXED(VAR)
+  PP_COMMA_IF(IDX) RMLT_INTERNAL_CASE_PREFIXED(VAR)
 
 #ifdef RJSJ_TEST_NO_EXIT
 #define RMLT_INTERNAL_EXIT(...) static_cast<void>(__VA_ARGS__)

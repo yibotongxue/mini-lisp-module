@@ -26,7 +26,8 @@ std::shared_ptr<Value> defineForm(
                        throw LispError("The param should be symbol.");
                      });
       std::vector<std::shared_ptr<Value>> body(args.begin() + 1, args.end());
-      env.addSymbol(*name, std::make_shared<LambdaValue>(params, body, env.shared_from_this()));
+      env.addSymbol(*name, std::make_shared<LambdaValue>(
+                               params, body, env.shared_from_this()));
       return std::make_shared<NilValue>();
     }
   }
