@@ -2,6 +2,7 @@ import tokenizer;
 import value;
 import eval_env;
 import parser;
+import error;
 import std;
 
 // #include "rjsj_test.hpp"
@@ -34,8 +35,10 @@ int main() {
       auto result = env->eval(std::move(value));
       std::cout << result->toString() << std::endl;
 
-    } catch (std::runtime_error& e) {
-      std::cerr << "Error: " << e.what() << std::endl;
+    } catch (const SyntaxError& e) {
+      std::cerr << "Syntax Error: " << e.what() << std::endl;
+    } catch (const LispError& e) {
+      std::cerr << "Lisp Error: " << e.what() << std::endl;
     }
   }
 }
