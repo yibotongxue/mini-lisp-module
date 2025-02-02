@@ -53,7 +53,7 @@ InstalledDir: /usr/local/LLVM-19.1.7-Linux-X64/bin
 然后使用如下命令配置
 
 ```bash
-xmake f --toolchain=llvm
+xmake f --toolchain=llvm --runtimes=c++_shared -c
 ```
 
 使用如下命令构建、编译
