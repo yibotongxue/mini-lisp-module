@@ -1,8 +1,9 @@
 export module value;
 
 import std;
+import eval_env_fwd;
 
-export enum class ValueType {
+enum class ValueType {
   kBoolean,
   kNumeric,
   kString,
@@ -132,8 +133,6 @@ export class BuiltinProcValue : public CallableValue {
  private:
   BuiltinFuncType func_;
 };
-
-class EvalEnv;
 
 export class LambdaValue : public CallableValue {
  public:
