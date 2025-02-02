@@ -1,7 +1,7 @@
 module parser;
 
 import error;
-import std;
+import value;
 
 std::shared_ptr<Value> Parser::parse() {
   auto token = std::move(tokens_[0]);

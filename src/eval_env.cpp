@@ -1,6 +1,5 @@
 module eval_env;
 
-import std;
 import error;
 import builtins;
 import forms;

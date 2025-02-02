@@ -1,6 +1,5 @@
 module tokenizer;
 
-import std;
 import error;
 
 const std::set<char> TOKEN_END{'(', ')', '\'', '`', ',', '"'};

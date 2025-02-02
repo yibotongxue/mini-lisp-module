@@ -1,7 +1,7 @@
 export module parser;
 
 import token;
-import value;
+import value.base;
 import std;
 
 export class Parser {

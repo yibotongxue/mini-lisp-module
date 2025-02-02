@@ -1,7 +1,5 @@
 module token;
 
-import std;
-
 using namespace std::literals;
 
 std::unique_ptr<Token> Token::fromChar(char c) {
