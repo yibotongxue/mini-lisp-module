@@ -1,22 +1,59 @@
 # `Mini-Lisp` 解释器
 
-这个项目作为 C++20 模块的一个实践，实现了[北京大学软件设计实践](https://pku-software.github.io/)的[大作业](https://pku-software.github.io/project-doc/)的 `Mini-Lisp` 解释器，当前实现到了 `Lv.6` 并通过了 `Lv.2` 到 `Lv.6` 的所有测试。
+这个项目作为 C++20 模块的一个实践，实现了[北京大学软件设计实践](https://pku-software.github.io/)的[大作业](https://pku-software.github.io/project-doc/)的 `Mini-Lisp` 解释器，当前实现到了 `Lv.6` ，在之前的实验中已经通过了 `Lv.2` 到 `Lv.6` 的所有测试，但代码重构后无法兼容测试库 `rjsj` 。
 
 ## 编译运行
 
-需要安装有 `clang` 和 `llvm` ，在 `Ubuntu` 系统可以用如下命令安装
+需要安装有 `clang` 和 `llvm` ，最好是最新的版本，我使用的版本是 `19.1.7` ，这个版本可以通过编译，以下的安装流程在 `Ubuntu` 平台安装的是 `19.1.7` 版本，如果要安装其他版本可以类似进行。安装流程由[Kimi](https://kimi.ai)提供。
+
+首先下载预编译的压缩包，使用如下命令
 
 ```bash
-sudo apt install clang
-wget https://apt.llvm.org/llvm.sh
-chmod +x llvm.sh
-sudo ./llvm.sh 18
+wget https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/LLVM-19.1.7-Linux-X64.tar.xz
 ```
+
+然后解压缩
+
+```bash
+tar -xf LLVM-19.1.7-Linux-X64.tar.xz
+```
+
+移动到 `/usr/local`
+
+```bash
+sudo mv LLVM-19.1.7-Linux-X64 /usr/local
+```
+
+添加 LLVM 19 的路径到系统环境变量
+
+```bash
+echo "export PATH=/usr/local/LLVM-19.1.7-Linux-X64/bin:\$PATH" | sudo tee /etc/profile.d/llvm-19.sh
+source /etc/profile.d/llvm-19.sh
+```
+
+检查是否安装成功
+
+```bash
+clang --version
+```
+
+如果安装成功，应该得到输出
+
+```
+clang version 19.1.7 (/home/runner/work/llvm-project/llvm-project/clang cd708029e0b2869e80abe31ddb175f7c35361f90)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /usr/local/LLVM-19.1.7-Linux-X64/bin
+```
+
+然后可以将 `source /etc/profile.d/llvm-19.sh` 写入 `.bashrc` 中，这样就不用每次使用都要输入这个命令。
+
+如果安装不成功，请自行检查上面的步骤是否有误，特别注意如果你安装的版本不是 `19.1.7` ，那么你需要修改命令中的版本号。如果版本号正确，也可以检查一下链接是否还有效等。以及注意你的平台可能不是 `Linux-X64` ，你需要对应的修改。具体的可以查看[Release](https://github.com/llvm/llvm-project/releases)页面。
 
 然后使用如下命令配置
 
 ```bash
-xmake f --toolchain=clang --sdk=/usr/lib/llvm-18
+xmake f --toolchain=llvm
 ```
 
 使用如下命令构建、编译
