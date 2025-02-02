@@ -1,7 +1,6 @@
 module token;
 
-import <iomanip>;
-import <sstream>;
+import std;
 
 using namespace std::literals;
 

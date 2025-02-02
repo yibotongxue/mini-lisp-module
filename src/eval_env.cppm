@@ -1,10 +1,7 @@
 export module eval_env;
 
 import value;
-import <memory>;
-import <unordered_map>;
-import <string>;
-import <vector>;
+import std;
 
 export class EvalEnv: public std::enable_shared_from_this<EvalEnv> {
  public:

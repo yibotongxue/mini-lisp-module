@@ -1,6 +1,6 @@
 export module error;
 
-import <stdexcept>;
+import std;
 
 export class SyntaxError : public std::runtime_error {
  public:

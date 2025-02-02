@@ -1,8 +1,7 @@
 export module tokenizer;
 
 import token;
-import <deque>;
-import <string>;
+import std;
 
 export class Tokenizer {
  private:

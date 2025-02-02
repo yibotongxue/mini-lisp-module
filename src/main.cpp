@@ -2,11 +2,7 @@ import tokenizer;
 import value;
 import parser;
 import eval_env;
-import <iostream>;
-import <string>;
-import <deque>;
-import <unordered_map>;
-import <memory>;
+import std;
 
 #include "rjsj_test.hpp"
 

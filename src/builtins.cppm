@@ -1,13 +1,8 @@
 export module builtins;
 
-import <unordered_map>;
-import <string>;
-import <memory>;
-import <vector>;
-import <functional>;
-import <iostream>;
 import value;
 import error;
+import std;
 
 std::shared_ptr<Value> add(const std::vector<std::shared_ptr<Value>>& params) {
   double result = 0.0;

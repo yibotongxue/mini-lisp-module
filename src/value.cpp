@@ -1,10 +1,7 @@
 module value;
 
-import <string>;
-import <memory>;
-import <iomanip>;
-import <sstream>;
 import eval_env;
+import std;
 
 import error;
 

@@ -1,10 +1,6 @@
 export module value;
 
-import <string>;
-import <memory>;
-import <vector>;
-import <optional>;
-import <functional>;
+import std;
 
 export enum class ValueType {
   kBoolean,

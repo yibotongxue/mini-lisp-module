@@ -1,9 +1,6 @@
 export module token;
 
-import <memory>;
-import <optional>;
-import <ostream>;
-import <string>;
+import std;
 
 export enum class TokenType {
   LEFT_PAREN,

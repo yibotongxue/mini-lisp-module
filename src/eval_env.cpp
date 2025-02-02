@@ -1,11 +1,9 @@
 module eval_env;
 
 import error;
-import <vector>;
 import builtins;
 import forms;
-import <algorithm>;
-import <functional>;
+import std;
 
 std::shared_ptr<Value> EvalEnv::eval(std::shared_ptr<Value> expr) {
   if (expr->isSelfEvaluating()) {

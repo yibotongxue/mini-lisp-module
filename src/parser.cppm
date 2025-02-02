@@ -2,8 +2,7 @@ export module parser;
 
 import token;
 import value;
-import <deque>;
-import <memory>;
+import std;
 
 export class Parser {
  public:

@@ -1,12 +1,6 @@
 export module forms;
 
-import <memory>;
-import <vector>;
-import <functional>;
-import <unordered_map>;
-import <string>;
-import <algorithm>;
-import <iterator>;
+import std;
 import value;
 import eval_env;
 import error;
