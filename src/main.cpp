@@ -1,5 +1,6 @@
 import tokenizer;
 import value;
+import eval_env;
 import parser;
 import std;
 

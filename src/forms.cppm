@@ -2,6 +2,7 @@ export module forms;
 
 import std;
 import value;
+import eval_env;
 import error;
 
 export using SpecialFormType = std::function<std::shared_ptr<Value>(
