@@ -4,8 +4,7 @@ import eval_env;
 import parser;
 import error;
 import std;
-
-// #include "rjsj_test.hpp"
+import rjsj_mini_lisp_test;
 
 struct TestCtx {
   std::shared_ptr<EvalEnv> env = EvalEnv::createGlobal();
@@ -19,7 +18,7 @@ struct TestCtx {
 };
 
 int main() {
-  // RJSJ_TEST(TestCtx, Lv2, Lv3, Lv4, Lv5, Lv6);
+  RjsjTest<TestCtx>({"Lv2", "Lv3", "Lv4", "Lv5", "Lv6"});
   auto env = EvalEnv::createGlobal();
   while (true) {
     try {

@@ -1,6 +1,6 @@
 # `Mini-Lisp` 解释器
 
-这个项目作为 C++20 模块的一个实践，实现了[北京大学软件设计实践](https://pku-software.github.io/)的[大作业](https://pku-software.github.io/project-doc/)的 `Mini-Lisp` 解释器，当前实现到了 `Lv.6` ，在之前的实验中已经通过了 `Lv.2` 到 `Lv.6` 的所有测试，但代码重构后无法兼容测试库 `rjsj` 。
+这个项目作为 C++20 模块的一个实践，实现了[北京大学软件设计实践](https://pku-software.github.io/)的[大作业](https://pku-software.github.io/project-doc/)的 `Mini-Lisp` 解释器，当前实现到了 `Lv.6` ，并通过了 `Lv.2` 到 `Lv.6` 的所有测试，但代码重构后无法兼容测试库 `rjsj` ，我们修改了测试库作为一个模块库，但没有改变测试用例。
 
 ## 编译运行
 
