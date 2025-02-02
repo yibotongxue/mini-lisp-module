@@ -1,10 +1,9 @@
 import tokenizer;
 import value;
 import parser;
-import eval_env;
 import std;
 
-#include "rjsj_test.hpp"
+// #include "rjsj_test.hpp"
 
 struct TestCtx {
   std::shared_ptr<EvalEnv> env = EvalEnv::createGlobal();
@@ -18,7 +17,7 @@ struct TestCtx {
 };
 
 int main() {
-  RJSJ_TEST(TestCtx, Lv2, Lv3, Lv4, Lv5, Lv6);
+  // RJSJ_TEST(TestCtx, Lv2, Lv3, Lv4, Lv5, Lv6);
   auto env = EvalEnv::createGlobal();
   while (true) {
     try {
